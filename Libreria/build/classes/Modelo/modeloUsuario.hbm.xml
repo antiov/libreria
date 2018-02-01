@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="Modelo.modeloUsuario" table="usuarios" >
+   <id column="id_usuario" name="id_usuario" type="integer">
+       <generator class="native"/>
+   </id>
+   <property column="nombre" name="nombre"  type="string"   />
+   <property column="cargo" name="cargo"   type="string"/>
+   <property column="contrasena" name="contrasena"  type="string" />
+   <property column="tipo_usuario" name="tipo_usuario"  type="string" />
+  </class>
+</hibernate-mapping>

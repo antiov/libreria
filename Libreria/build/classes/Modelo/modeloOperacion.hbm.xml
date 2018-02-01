@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="Modelo.modeloOperacion" table="operacion" >
+   <id column="id_operacion" name="id_operacion" type="integer">
+   <id column="libro_isbn" name="libro_isbn" type="string">
+   <id column="usuarios_id_usuario" name="usuarios_id_usuario" type="integer">
+       <generator class="native"/>
+   </id>
+   <property column="tipo_op" name="tipo_op"  type="string"   />
+   <property column="fecha_recibido" name="fecha_recibido"   type="date"/>
+  </class>
+</hibernate-mapping>

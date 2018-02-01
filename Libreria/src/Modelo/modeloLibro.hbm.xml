@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="Modelo.modeloLibro" table="libro" >
+   <id column="isbn" name="isbn" type="string">
+   </id>
+   <property column="titulo" name="titulo"  type="string"   />
+   <property column="autores" name="autores"   type="string"/>
+   <property column="editorial" name="editorial"   type="string"/>
+   <property column="lugar_impresion" name="lugar_impresion"   type="string"/>
+   <property column="num_pag" name="num_pag"   type="integer"/>
+   <property column="idioma" name="idioma"   type="string"/>
+   <property column="precio" name="precio"   type="float"/>
+   <property column="ejemplares_disponibles" name="ejemplares_disponibles"   type="integer"/>
+  </class>
+</hibernate-mapping>
