@@ -32,10 +32,10 @@ public class DAO_usuario {
         {
             System.out.println("Error query " + ex.getMessage());
         }
-        finally
-        {
-            sf.close();
-        }
+//        finally
+//        {
+//            sf.close();
+//        }
         return i;
     }
     

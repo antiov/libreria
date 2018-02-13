@@ -9,12 +9,10 @@ import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.ImageIcon;
-import org.apache.log4j.Logger;
 
 
 
 public class Inicio extends javax.swing.JFrame {
-    private static final Logger log = Logger.getLogger(Inicio.class);
 
     public Inicio() {
         initComponents();
@@ -26,7 +24,6 @@ public class Inicio extends javax.swing.JFrame {
         Image imagen = icono.getImage();
         ImageIcon iconoEscalado = new ImageIcon (imagen.getScaledInstance(200,200,Image.SCALE_SMOOTH));
         jLabel5.setIcon(iconoEscalado);
-        log.info("Se ha iniciado la aplicacion");
         lbCargando.setVisible(false);
     }
 
@@ -201,16 +198,7 @@ public class Inicio extends javax.swing.JFrame {
               // Iterator iterador = lb.VerUsuario(nom,pass).listIterator();
               List<?> b = lb.VerUsuario(nom,pass);
               Iterator iterador = b.iterator();
-           
-              String dat1 = ""; 
-              DAO_usuario lu = new DAO_usuario();
-            
-                  //Object[] tuple = (Object[])iterador.next(); 
-                  //dat1 += tuple[0] + " " + (String)tuple[1] + " " +  (String)tuple[2]  + " " + (String)tuple[3] + " " +  (String)tuple[4] + "\n";
-                  
-                  //System.out.println("tipo_usuario = " + mUser.getTipo_usuario()); 
-                
-              
+
              if(b.size() == 1) //si la lista trae resultados
              {                                
                 while (iterador.hasNext()) 
@@ -243,8 +231,6 @@ public class Inicio extends javax.swing.JFrame {
                   System.out.println("DATOS NO VALIDOS");
                  lbresultado.setText("DATOS NO VALIDOS");
              }
-       
-              System.out.println(" dat1 = \n " + dat1 + " \n** ** ** **");
               btnIngresar.setEnabled(true);
              lbCargando.setVisible(false);
         }
