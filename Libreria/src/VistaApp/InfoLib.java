@@ -1,6 +1,7 @@
 package VistaApp;
 
 import Modelo.modeloLibro;
+import Modelo.modeloUsuario;
 import VistaApp.Inicio;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,7 @@ public class InfoLib extends javax.swing.JFrame implements Runnable{
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser;
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -489,6 +491,12 @@ public class InfoLib extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+    
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);        
+    }       
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCerrarSesion;

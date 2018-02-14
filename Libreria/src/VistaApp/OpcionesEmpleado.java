@@ -1,6 +1,7 @@
 package VistaApp;
 
 //import VistaApp.Inicio;
+import Modelo.modeloUsuario;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -10,6 +11,7 @@ public class OpcionesEmpleado extends javax.swing.JFrame implements Runnable{
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser;
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -247,13 +249,17 @@ public class OpcionesEmpleado extends javax.swing.JFrame implements Runnable{
     private void btnAdminLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminLibrosActionPerformed
         this.dispose();
         this.hide();
-        new AdminLib().setVisible(true);
+        AdminLib al = new AdminLib();
+        al.setmUser(mUser);
+        al.setVisible(true);
     }//GEN-LAST:event_btnAdminLibrosActionPerformed
 
     private void btnCrearReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearReporteActionPerformed
         this.dispose();
         this.hide();
-        new CrearReporte().setVisible(true);
+        CrearReporte cr = new CrearReporte();
+        cr.setmUser(mUser);
+        cr.setVisible(true);
     }//GEN-LAST:event_btnCrearReporteActionPerformed
 
     /**
@@ -293,6 +299,12 @@ public class OpcionesEmpleado extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+    
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);
+    }     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnAdminLibros;

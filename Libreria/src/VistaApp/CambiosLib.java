@@ -2,6 +2,7 @@ package VistaApp;
 
 import ControladoresBD.DAO_libro;
 import Modelo.modeloLibro;
+import Modelo.modeloUsuario;
 import VistaApp.Inicio;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +13,7 @@ public class CambiosLib extends javax.swing.JFrame implements Runnable{
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser; 
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -722,7 +724,9 @@ public class CambiosLib extends javax.swing.JFrame implements Runnable{
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        new AdminLib().setVisible(true);
+        AdminLib al = new AdminLib();
+        al.setmUser(mUser);
+        al.setVisible(true);
     }//GEN-LAST:event_btnRegresaActionPerformed
     
     /**
@@ -762,6 +766,12 @@ public class CambiosLib extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+    
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);        
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCambiar;

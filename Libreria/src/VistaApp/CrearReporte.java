@@ -1,5 +1,6 @@
 package VistaApp;
 
+import Modelo.modeloUsuario;
 import VistaApp.Inicio;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ public class CrearReporte extends javax.swing.JFrame implements Runnable{
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser;     
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -254,7 +256,15 @@ public class CrearReporte extends javax.swing.JFrame implements Runnable{
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        new OpcionesAdmin().setVisible(true);
+        if (mUser.getTipo_usuario().equals("administrador") || mUser.getTipo_usuario().equals("admin")) {
+            OpcionesAdmin oa = new OpcionesAdmin();
+            oa.setmUser(mUser);
+            oa.setVisible(true);
+        } else {
+            OpcionesEmpleado opEmpleado = new OpcionesEmpleado();
+            opEmpleado.setmUser(mUser);
+            opEmpleado.setVisible(true);
+        }      
     }//GEN-LAST:event_btnRegresaActionPerformed
 
     private void btnReporteBajsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteBajsActionPerformed
@@ -307,6 +317,11 @@ public class CrearReporte extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);        
+    }   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCerrarSesion;

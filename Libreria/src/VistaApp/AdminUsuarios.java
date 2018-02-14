@@ -1,15 +1,18 @@
 package VistaApp;
 
 //import VistaApp.Inicio;
+import Modelo.modeloUsuario;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import javax.swing.JLabel;
 
 public class AdminUsuarios extends javax.swing.JFrame implements Runnable{
     private static String hora,minutos,segundos,ampm;
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser;    
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -247,22 +250,25 @@ public class AdminUsuarios extends javax.swing.JFrame implements Runnable{
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        new OpcionesAdmin().setVisible(true);
+        OpcionesAdmin oa = new OpcionesAdmin();
+        oa.setmUser(mUser);
+        oa.setVisible(true);  
     }//GEN-LAST:event_btnRegresaActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
         this.dispose();
         this.hide();
-        new EditarUsuario().setVisible(true);
-
-        //   new Inventario().setVisible(true);
-
+        EditarUsuario eu = new EditarUsuario();
+        eu.setmUser(mUser);
+        eu.setVisible(true);
     }//GEN-LAST:event_btnEditarUsuarioActionPerformed
 
     private void btnAgregarUsuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarUsuario1ActionPerformed
          this.dispose();
         this.hide();
-        new AgregarUsuario().setVisible(true);
+        AgregarUsuario au = new AgregarUsuario();
+        au.setmUser(mUser);
+        au.setVisible(true);
     }//GEN-LAST:event_btnAgregarUsuario1ActionPerformed
 
     /**
@@ -303,6 +309,12 @@ public class AdminUsuarios extends javax.swing.JFrame implements Runnable{
         });
     }
 
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);        
+    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnAgregarUsuario1;
     private javax.swing.JToggleButton btnCerrarSesion;

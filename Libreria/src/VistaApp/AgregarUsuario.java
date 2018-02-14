@@ -2,6 +2,7 @@ package VistaApp;
 
 //import VistaApp.Inicio;
 import ControladoresBD.DAO_usuario;
+import Modelo.modeloUsuario;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -11,6 +12,7 @@ public class AgregarUsuario extends javax.swing.JFrame implements Runnable{
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser;
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -313,7 +315,9 @@ public class AgregarUsuario extends javax.swing.JFrame implements Runnable{
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        new AdminUsuarios().setVisible(true);
+        AdminUsuarios au = new AdminUsuarios();
+        au.setmUser(mUser);
+        au.setVisible(true);
     }//GEN-LAST:event_btnRegresaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -384,6 +388,12 @@ public class AgregarUsuario extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+    
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);        
+    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;

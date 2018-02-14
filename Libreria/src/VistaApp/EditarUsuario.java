@@ -14,6 +14,7 @@ public class EditarUsuario extends javax.swing.JFrame implements Runnable{
     private static String dia,mes,año;
     private static Calendar calendario1;
     private static Thread h1; 
+    private modeloUsuario mUser;
     @Override
     @SuppressWarnings("SleepWhileInLoop")
         public void run(){
@@ -51,8 +52,6 @@ public class EditarUsuario extends javax.swing.JFrame implements Runnable{
         h1 = new Thread(this);
         h1.start();
         super.setLocationRelativeTo(null);
-        lblNombreUser.setText("admin");
-        lblCargo1.setText("dueño");
         iniciTxtArea();
     }
 
@@ -359,7 +358,9 @@ public class EditarUsuario extends javax.swing.JFrame implements Runnable{
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        new AdminUsuarios().setVisible(true);
+        AdminUsuarios au = new AdminUsuarios();
+        au.setmUser(mUser);
+        au.setVisible(true); 
     }//GEN-LAST:event_btnRegresaActionPerformed
 
     private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
@@ -442,6 +443,12 @@ public class EditarUsuario extends javax.swing.JFrame implements Runnable{
         });
     }
 
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);        
+    }   
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCerrarSesion;
     private javax.swing.JButton btnEliminarUser;

@@ -205,6 +205,8 @@ public class Inicio extends javax.swing.JFrame {
                 { 
                   Object[] tuple = (Object[])iterador.next(); 
                   //dat1 += tuple[0] + " " + (String)tuple[1] + " " +  (String)tuple[2]  + " " + (String)tuple[3] + " " +  (String)tuple[4] + "\n";
+                  mUser.setNombre((String)tuple[1]);
+                  mUser.setCargo((String)tuple[2]);
                   mUser.setTipo_usuario((String)tuple[4]);
                   System.out.println("tipo_usuario = " + mUser.getTipo_usuario()); 
                 } 
@@ -213,7 +215,8 @@ public class Inicio extends javax.swing.JFrame {
                 
                 if(mUser.getTipo_usuario().equals("administrador") || mUser.getTipo_usuario().equals("admin"))
                 {
-                      opAdmin = new OpcionesAdmin(); //iniciamos la pantalla de admin
+                      opAdmin = new OpcionesAdmin();
+                      opAdmin.setmUser(mUser);
                       opAdmin.setVisible(true);
                       this.dispose();
                       this.setVisible(false);
@@ -221,6 +224,7 @@ public class Inicio extends javax.swing.JFrame {
                 else
                 {
                      opEmpleado = new OpcionesEmpleado();
+                     opEmpleado.setmUser(mUser);
                      opEmpleado.setVisible(true);
                       this.dispose();
                       this.setVisible(false);

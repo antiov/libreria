@@ -1,53 +1,58 @@
 package VistaApp;
 
 //import VistaApp.Inicio;
+import Modelo.modeloUsuario;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class AdminLib extends javax.swing.JFrame implements Runnable{
-    private static String hora,minutos,segundos,ampm;
-    private static String dia,mes,año;
+public class AdminLib extends javax.swing.JFrame implements Runnable {
+
+    private static String hora, minutos, segundos, ampm;
+    private static String dia, mes, año;
     private static Calendar calendario1;
-    private static Thread h1; 
+    private static Thread h1;
+    private modeloUsuario mUser;
+
     @Override
     @SuppressWarnings("SleepWhileInLoop")
-        public void run(){
-            Thread ct = Thread.currentThread();
-            while(ct == h1) {
-                calcula();
-                lblFechaHora.setText(dia+"/"+mes+"/"+año+"\n    "+hora + ":" + minutos + ":" + segundos + " "+ampm+" ");
-                try {
+    public void run() {
+        Thread ct = Thread.currentThread();
+        while (ct == h1) {
+            calcula();
+            lblFechaHora.setText(dia + "/" + mes + "/" + año + "\n    " + hora + ":" + minutos + ":" + segundos + " " + ampm + " ");
+            try {
                 Thread.sleep(1000);
-                }catch(InterruptedException e) {}
+            } catch (InterruptedException e) {
             }
         }
-        
-    public void calcula () {
+    }
+
+    public void calcula() {
         Calendar calendar = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
         calendar.setTime(fechaHoraActual);
-        ampm = calendar.get(Calendar.AM_PM)==Calendar.AM?"AM":"PM";
-        if(ampm.equals("PM")){
-            int h = calendar.get(Calendar.HOUR_OF_DAY)-12;
-            hora = h>9?""+h:"0"+h;
-        }else{
-            hora = calendar.get(Calendar.HOUR_OF_DAY)>9?""+calendar.get(Calendar.HOUR_OF_DAY):"0"+calendar.get(Calendar.HOUR_OF_DAY); }
-            minutos = calendar.get(Calendar.MINUTE)>9?""+calendar.get(Calendar.MINUTE):"0"+calendar.get(Calendar.MINUTE);
-            segundos = calendar.get(Calendar.SECOND)>9?""+calendar.get(Calendar.SECOND):"0"+calendar.get(Calendar.SECOND);
-            dia = calendar.get(Calendar.DAY_OF_MONTH)>9?""+calendar.get(Calendar.DAY_OF_MONTH):"0"+calendar.get(Calendar.DAY_OF_MONTH);
-            mes = (calendar.get(Calendar.MONTH)+1)>9?""+(calendar.get(Calendar.MONTH)+1):"0"+(calendar.get(Calendar.MONTH)+1);
-            año = calendar.get(Calendar.YEAR)>9?""+calendar.get(Calendar.YEAR):"0"+calendar.get(Calendar.YEAR);
+        ampm = calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+        if (ampm.equals("PM")) {
+            int h = calendar.get(Calendar.HOUR_OF_DAY) - 12;
+            hora = h > 9 ? "" + h : "0" + h;
+        } else {
+            hora = calendar.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendar.get(Calendar.HOUR_OF_DAY) : "0" + calendar.get(Calendar.HOUR_OF_DAY);
+        }
+        minutos = calendar.get(Calendar.MINUTE) > 9 ? "" + calendar.get(Calendar.MINUTE) : "0" + calendar.get(Calendar.MINUTE);
+        segundos = calendar.get(Calendar.SECOND) > 9 ? "" + calendar.get(Calendar.SECOND) : "0" + calendar.get(Calendar.SECOND);
+        dia = calendar.get(Calendar.DAY_OF_MONTH) > 9 ? "" + calendar.get(Calendar.DAY_OF_MONTH) : "0" + calendar.get(Calendar.DAY_OF_MONTH);
+        mes = (calendar.get(Calendar.MONTH) + 1) > 9 ? "" + (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1);
+        año = calendar.get(Calendar.YEAR) > 9 ? "" + calendar.get(Calendar.YEAR) : "0" + calendar.get(Calendar.YEAR);
     }
+
     @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
     public AdminLib() {
         initComponents();
         h1 = new Thread(this);
         h1.start();
         super.setLocationRelativeTo(null);
-        lblNombreUser.setText("admin");
-        lblCargo1.setText("dueño");
     }
 
     @SuppressWarnings("unchecked")
@@ -269,31 +274,47 @@ public class AdminLib extends javax.swing.JFrame implements Runnable{
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        new OpcionesAdmin().setVisible(true);
+        if (mUser.getTipo_usuario().equals("administrador") || mUser.getTipo_usuario().equals("admin")) {
+            OpcionesAdmin oa = new OpcionesAdmin();
+            oa.setmUser(mUser);
+            oa.setVisible(true);
+        } else {
+            OpcionesEmpleado opEmpleado = new OpcionesEmpleado();
+            opEmpleado.setmUser(mUser);
+            opEmpleado.setVisible(true);
+        }
     }//GEN-LAST:event_btnRegresaActionPerformed
 
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         this.dispose();
         this.hide();
-        new ConsultaLib().setVisible(true);
+        ConsultaLib cl = new ConsultaLib();
+        cl.setmUser(mUser);
+        cl.setVisible(true);
     }//GEN-LAST:event_btnConsultaActionPerformed
 
     private void btnCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiosActionPerformed
         this.dispose();
         this.hide();
-        new CambiosLib().setVisible(true);
+        CambiosLib cl = new CambiosLib();
+        cl.setmUser(mUser);
+        cl.setVisible(true);
     }//GEN-LAST:event_btnCambiosActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
         this.dispose();
         this.hide();
-        new AltaLib().setVisible(true);
+        AltaLib al = new AltaLib();
+        al.setmUser(mUser);
+        al.setVisible(true);
     }//GEN-LAST:event_btnAltaActionPerformed
 
     private void btnBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaActionPerformed
         this.dispose();
         this.hide();
-        new BajaLib().setVisible(true);
+        BajaLib bl = new BajaLib();
+        bl.setmUser(mUser);
+        bl.setVisible(true);
     }//GEN-LAST:event_btnBajaActionPerformed
 
     /**
@@ -314,13 +335,13 @@ public class AdminLib extends javax.swing.JFrame implements Runnable{
                 }
             }
         } catch (ClassNotFoundException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-          //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -332,6 +353,12 @@ public class AdminLib extends javax.swing.JFrame implements Runnable{
                 new AdminLib().setVisible(true);
             }
         });
+    }
+
+    public void setmUser(modeloUsuario mUser) {
+        this.mUser = mUser;
+        lblNombreUser.setText(mUser.nombre);
+        lblCargo1.setText(mUser.cargo);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
