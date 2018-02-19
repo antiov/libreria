@@ -107,21 +107,16 @@ public class DAO_usuario {
       return algo;
     }
    
-   public String updateUser(int id,String nombre ,String cargo,String contrasena,String tipo_usuario)
+   public String updateUser(modeloUsuario muser)
    {
      String algo = "";  
-   String query = ( "UPDATE usuarios SET nombre = '" + nombre + "',cargo = '" + cargo + "', contrasena = '" + contrasena + "', tipo_usuario = '" + tipo_usuario + "' " +
-                         "WHERE ( nombre = '' );"); 
         
         factory = new Configuration().configure().buildSessionFactory();
          Session ss = factory.openSession();
-         modeloUsuario muser = new modeloUsuario(0,nombre , cargo , contrasena , tipo_usuario);
-         
         try
          {
             
            Transaction tx = ss.beginTransaction();
-             muser.setId_usuario(id);
           ss.update(muser);
          tx.commit();
             

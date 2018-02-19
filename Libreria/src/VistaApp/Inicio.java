@@ -213,7 +213,7 @@ public class Inicio extends javax.swing.JFrame {
                  System.out.println("Datos VALIDOS");
                  lbresultado.setText("Bienvenido " + mUser.getTipo_usuario() );
                 
-                if(mUser.getTipo_usuario().equals("administrador") || mUser.getTipo_usuario().equals("admin"))
+                if(mUser.getTipo_usuario().equals("Admin"))
                 {
                       opAdmin = new OpcionesAdmin();
                       opAdmin.setmUser(mUser);

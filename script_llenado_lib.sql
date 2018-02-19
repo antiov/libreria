@@ -2,9 +2,9 @@ USE lib_america;
 
 INSERT INTO usuarios (nombre,cargo,contrasena,tipo_usuario)
 VALUES 
-('Julio','dueno','root','administrador'),
-('Cesar','asesor','1234','empleado'),
-('Carlos','asesor','5678','empleado');
+('Julio','Caja','root','Admin'),
+('Cesar','Asesor','1234','Empleado'),
+('Carlos','Asesor','5678','Empleado');
 SELECT * FROM usuarios;
 -- select * from usuarios where nombre = 'Julio' and contrasena = 'root';
 
