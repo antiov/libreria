@@ -2,6 +2,7 @@ package Modelo;
 
 public class modeloLibro  implements java.io.Serializable {
 
+     public Integer id_libro;
      public String isbn;
      public String titulo;
      public String autores;
@@ -9,13 +10,14 @@ public class modeloLibro  implements java.io.Serializable {
      public String lugar_impresion;
      public Integer num_pag;
      public String idioma;
-     public Integer precio;
+     public Float precio;
      public Integer ejemplares_disponibles;
 
     public modeloLibro() {
     }
 
-    public modeloLibro(String isbn, String titulo, String autores, String editorial, String lugar_impresion, Integer num_pag, String idioma, Integer precio, Integer ejemplares_disponibles) {
+    public modeloLibro(Integer id_libro, String isbn, String titulo, String autores, String editorial, String lugar_impresion, Integer num_pag, String idioma, Float precio, Integer ejemplares_disponibles) {
+        this.id_libro = id_libro;
         this.isbn = isbn;
         this.titulo = titulo;
         this.autores = autores;
@@ -27,6 +29,15 @@ public class modeloLibro  implements java.io.Serializable {
         this.ejemplares_disponibles = ejemplares_disponibles;
     }
 
+    public Integer getId_libro() {
+        return id_libro;
+    }
+
+    public void setId_libro(Integer id_libro) {
+        this.id_libro = id_libro;
+    }
+
+
     public String getIsbn() {
         return isbn;
     }
@@ -35,6 +46,8 @@ public class modeloLibro  implements java.io.Serializable {
         this.isbn = isbn;
     }
 
+    
+    
     public String getTitulo() {
         return titulo;
     }
@@ -83,11 +96,11 @@ public class modeloLibro  implements java.io.Serializable {
         this.idioma = idioma;
     }
 
-    public Integer getPrecio() {
+    public Float getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Integer precio) {
+    public void setPrecio(Float precio) {
         this.precio = precio;
     }
 

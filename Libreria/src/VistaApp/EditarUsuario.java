@@ -381,7 +381,21 @@ public class EditarUsuario extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_cBoxCargoActionPerformed
 
     private void btnEliminarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUserActionPerformed
-        // TODO add your handling code here:
+        DAO_usuario dauser = new DAO_usuario();
+        try {
+            int selectedIdx = usuarios.getSelectedIndex() - 1;
+            if (listaUsuarios != null && !listaUsuarios.isEmpty() && selectedIdx >= 0) {
+                modeloUsuario muser = listaUsuarios.get(selectedIdx);
+                muser.nombre = nombreUsuario.getText();
+                muser.cargo = cBoxCargo.getSelectedItem().toString();
+                muser.contrasena = (txtpasword.getText().isEmpty()) ? muser.contrasena : txtpasword.getText();
+                muser.tipo_usuario = cBoxTipoUser.getSelectedItem().toString();
+                lbResult.setText(dauser.deleteUser(muser));
+            }
+        } catch (Exception ex) {
+            System.out.println("¡ERROR! " + ex.getMessage());
+            lbResult.setText("¡ERROR!");
+        }        
     }//GEN-LAST:event_btnEliminarUserActionPerformed
 
     private void usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariosActionPerformed

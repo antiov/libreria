@@ -2,50 +2,64 @@ package VistaApp;
 
 //import VistaApp.Inicio;
 import ControladoresBD.DAO_libro;
+import ControladoresBD.DAO_operacion;
 import Modelo.modeloLibro;
+import Modelo.modeloOperacion;
 import Modelo.modeloUsuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class AltaLib extends javax.swing.JFrame implements Runnable{
-    private static String hora,minutos,segundos,ampm;
-    private static String dia,mes,año;
+public class AltaLib extends javax.swing.JFrame implements Runnable {
+
+    private static String hora, minutos, segundos, ampm;
+    private static String dia, mes, año;
     private static Calendar calendario1;
-    private static Thread h1; 
-    private modeloUsuario mUser; 
+    private static Thread h1;
+    private modeloUsuario mUser;
+    private modeloLibro mLib = new modeloLibro();
+    private modeloOperacion mOp = new modeloOperacion();
+
     @Override
     @SuppressWarnings("SleepWhileInLoop")
-        public void run(){
-            Thread ct = Thread.currentThread();
-            while(ct == h1) {
-                calcula();
-                lblFechaHora.setText(dia+"/"+mes+"/"+año+"\n    "+hora + ":" + minutos + ":" + segundos + " "+ampm+" ");
-                try {
+    public void run() {
+        Thread ct = Thread.currentThread();
+        while (ct == h1) {
+            calcula();
+            lblFechaHora.setText(dia + "/" + mes + "/" + año + "\n    " + hora + ":" + minutos + ":" + segundos + " " + ampm + " ");
+            try {
                 Thread.sleep(1000);
-                }catch(InterruptedException e) {}
+            } catch (InterruptedException e) {
             }
         }
-        
-    public void calcula () {
+    }
+
+    public void calcula() {
         Calendar calendar = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
         calendar.setTime(fechaHoraActual);
-        ampm = calendar.get(Calendar.AM_PM)==Calendar.AM?"AM":"PM";
-        if(ampm.equals("PM")){
-            int h = calendar.get(Calendar.HOUR_OF_DAY)-12;
-            hora = h>9?""+h:"0"+h;
-        }else{
-            hora = calendar.get(Calendar.HOUR_OF_DAY)>9?""+calendar.get(Calendar.HOUR_OF_DAY):"0"+calendar.get(Calendar.HOUR_OF_DAY); }
-            minutos = calendar.get(Calendar.MINUTE)>9?""+calendar.get(Calendar.MINUTE):"0"+calendar.get(Calendar.MINUTE);
-            segundos = calendar.get(Calendar.SECOND)>9?""+calendar.get(Calendar.SECOND):"0"+calendar.get(Calendar.SECOND);
-            dia = calendar.get(Calendar.DAY_OF_MONTH)>9?""+calendar.get(Calendar.DAY_OF_MONTH):"0"+calendar.get(Calendar.DAY_OF_MONTH);
-            mes = (calendar.get(Calendar.MONTH)+1)>9?""+(calendar.get(Calendar.MONTH)+1):"0"+(calendar.get(Calendar.MONTH)+1);
-            año = calendar.get(Calendar.YEAR)>9?""+calendar.get(Calendar.YEAR):"0"+calendar.get(Calendar.YEAR);
+        ampm = calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+        if (ampm.equals("PM")) {
+            int h = calendar.get(Calendar.HOUR_OF_DAY) - 12;
+            hora = h > 9 ? "" + h : "0" + h;
+        } else {
+            hora = calendar.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendar.get(Calendar.HOUR_OF_DAY) : "0" + calendar.get(Calendar.HOUR_OF_DAY);
+        }
+        minutos = calendar.get(Calendar.MINUTE) > 9 ? "" + calendar.get(Calendar.MINUTE) : "0" + calendar.get(Calendar.MINUTE);
+        segundos = calendar.get(Calendar.SECOND) > 9 ? "" + calendar.get(Calendar.SECOND) : "0" + calendar.get(Calendar.SECOND);
+        dia = calendar.get(Calendar.DAY_OF_MONTH) > 9 ? "" + calendar.get(Calendar.DAY_OF_MONTH) : "0" + calendar.get(Calendar.DAY_OF_MONTH);
+        mes = (calendar.get(Calendar.MONTH) + 1) > 9 ? "" + (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1);
+        año = calendar.get(Calendar.YEAR) > 9 ? "" + calendar.get(Calendar.YEAR) : "0" + calendar.get(Calendar.YEAR);
     }
+
     @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
-    
+
     public AltaLib() {
         initComponents();
         h1 = new Thread(this);
@@ -55,6 +69,7 @@ public class AltaLib extends javax.swing.JFrame implements Runnable{
         lblCargo1.setText("dueño");
         lbResult.setVisible(false);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -279,17 +294,9 @@ public class AltaLib extends javax.swing.JFrame implements Runnable{
             }
         });
 
-        txtISBN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtISBNActionPerformed(evt);
-            }
-        });
-        txtISBN.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtISBNKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtISBNKeyTyped(evt);
+        txtISBN.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtISBNFocusLost(evt);
             }
         });
 
@@ -607,78 +614,91 @@ public class AltaLib extends javax.swing.JFrame implements Runnable{
         //validarNum(evt);
     }//GEN-LAST:event_txtPrecioKeyTyped
 
-    private void txtISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtISBNActionPerformed
-        //consultar();
-    }//GEN-LAST:event_txtISBNActionPerformed
-
-    private void txtISBNKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtISBNKeyPressed
-
-    }//GEN-LAST:event_txtISBNKeyPressed
-
-    private void txtISBNKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtISBNKeyTyped
-        //validarNum(evt);
-        if(txtISBN.getText().length()>12)
-        evt.consume();
-    }//GEN-LAST:event_txtISBNKeyTyped
-
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        //consultar();
+        String isb = txtISBN.getText();
     }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void isbnChanged() {
+    }
 
     private void btnLimpiarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLibroActionPerformed
         txtISBN.setText("");
+        txtTitulo.setText("");
+        txtAutor.setText("");
+        txtEditorial.setText("");
+        txtLugarImp.setText("");
+        txtNumPag.setText("");
+        txtIdioma.setText("");
+        txtPrecio.setText("");
         txtEjemplaresRec.setText("");
-        txtISBN.setEnabled(true);
-        txtISBN.setEditable(true);
-        btnConsultar.setEnabled(true);
     }//GEN-LAST:event_btnLimpiarLibroActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-         getVariables();
-        String isbn = txtISBN.getText();
-        String titulo = txtTitulo.getText();
-        String autor  = txtAutor.getText();
-        String editorial = txtEditorial.getText();
-        String lugarimp = txtLugarImp.getText();
-        String numpag = txtNumPag.getText();
-        String ejemp = txtEjemplaresRec.getText();
-        String idioma = txtIdioma.getText();
-        String precio = txtPrecio.getText();     
-        
+        getVariables();
+
         DAO_libro dlib = new DAO_libro();
-       
-        try
-        {
-          dlib.insertLibro(mLib);
-          lbResult.setText("Datos Agregados");
-          lbResult.setVisible(true);
-          
-        }
-         catch(Exception ex)
-        {
+        DAO_operacion dop = new DAO_operacion();
+
+        try {
+            if (dlib.insertLibro(mLib) != null) {
+                List<modeloLibro> libros = dlib.buscaLibros("isbn", mLib.isbn);
+                if (libros.size() == 1) {
+                    mLib = libros.get(0);
+                    mOp.libro_id_libro = mLib.id_libro;
+                    dop.insertOperacion(mOp);
+                    lbResult.setText("Datos Agregados");
+                    lbResult.setVisible(true);
+                }
+            }
+
+        } catch (Exception ex) {
             lbResult.setText(ex.getMessage());
             System.out.println("Error query " + ex.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    modeloLibro mLib = null;
     private void getVariables() //tomamos todas las variables del form
     {
-        mLib = new modeloLibro();
-    
-         mLib.setIsbn(txtISBN.getText());
-         mLib.setTitulo(txtTitulo.getText());
-         mLib.setAutores(txtAutor.getText());
-         mLib.setEditorial(txtEditorial.getText());
-         mLib.setLugar_impresion(txtLugarImp.getText());
-         mLib.setNum_pag(Integer.parseUnsignedInt(  txtNumPag.getText() ));
-         mLib.setIdioma(txtIdioma.getText());
-         mLib.setPrecio(Integer.parseUnsignedInt( txtPrecio.getText() ));
-         mLib.setEjemplares_disponibles(Integer.parseInt( txtEjemplaresRec.getText()));
+        try //tomamos todas las variables del form
+        {
+            mLib.setIsbn(txtISBN.getText());
+            mLib.setTitulo(txtTitulo.getText());
+            mLib.setAutores(txtAutor.getText());
+            mLib.setEditorial(txtEditorial.getText());
+            mLib.setLugar_impresion(txtLugarImp.getText());
+            mLib.setNum_pag(Integer.parseUnsignedInt(txtNumPag.getText()));
+            mLib.setIdioma(txtIdioma.getText());
+            mLib.setPrecio(Float.parseFloat(txtPrecio.getText()));
+            mLib.setEjemplares_disponibles(Integer.parseInt(txtEjemplaresRec.getText()));
+
+            mOp.setFecha_recibido(new SimpleDateFormat("dd/MM/yyyy").parse(lblFechaHora.getText().substring(0, 10)));
+            mOp.libro_isbn = txtISBN.getText();
+            String tipoOp = (rbnCompra.isSelected()) ? "Compra" : "";
+            if (tipoOp.isEmpty()) {
+                tipoOp = (rbnTrueque.isSelected()) ? "Trueque" : "";
+            }
+            mOp.tipo_op = tipoOp;
+            mOp.usuarios_id_usuario = mUser.id_usuario;
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaLib.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
+    private void setValoresLibro() //tomamos todas las variables del form
+    {
+        txtISBN.setText(mLib.isbn.toString());
+        txtTitulo.setText(mLib.titulo);
+        txtAutor.setText(mLib.autores);
+        txtEditorial.setText(mLib.editorial);
+        txtLugarImp.setText(mLib.lugar_impresion);
+        txtNumPag.setText(mLib.num_pag.toString());
+        txtIdioma.setText(mLib.idioma);
+        txtPrecio.setText(mLib.precio.toString());
+        txtEjemplaresRec.setText(mLib.ejemplares_disponibles.toString());
+    }
+
     private void txtEjemplaresRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEjemplaresRecActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEjemplaresRecActionPerformed
@@ -690,6 +710,15 @@ public class AltaLib extends javax.swing.JFrame implements Runnable{
     private void rbnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbnCompraActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rbnCompraActionPerformed
+
+    private void txtISBNFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtISBNFocusLost
+        DAO_libro daoLibro = new DAO_libro();
+        List<modeloLibro> libros = daoLibro.buscaLibros("isbn", txtISBN.getText());
+        if (libros.size() == 1) {
+            mLib = libros.get(0);
+        }
+        setValoresLibro();
+    }//GEN-LAST:event_txtISBNFocusLost
 
     /**
      * @param args the command line arguments
@@ -709,13 +738,13 @@ public class AltaLib extends javax.swing.JFrame implements Runnable{
                 }
             }
         } catch (ClassNotFoundException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-          //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-          //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -728,11 +757,12 @@ public class AltaLib extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+
     public void setmUser(modeloUsuario mUser) {
         this.mUser = mUser;
         lblNombreUser.setText(mUser.nombre);
-        lblCargo1.setText(mUser.cargo);        
-    }        
+        lblCargo1.setText(mUser.cargo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup Alta;

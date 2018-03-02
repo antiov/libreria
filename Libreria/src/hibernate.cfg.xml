@@ -50,5 +50,6 @@ Contributor(s):
     <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
     <mapping resource="Modelo/modeloLibro.hbm.xml"/>
     <mapping resource="Modelo/modeloUsuario.hbm.xml"/>
+    <mapping resource="Modelo/modeloOperacion.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

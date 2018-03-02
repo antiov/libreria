@@ -21,6 +21,7 @@ USE lib_america;
 -- Table `lib_america`.`libro`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS libro (
+  id_libro INT NOT NULL AUTO_INCREMENT COMMENT '',
   isbn VARCHAR(20) NOT NULL COMMENT '',
   titulo VARCHAR(50) NULL COMMENT '',
   autores VARCHAR(50) NULL COMMENT '',
@@ -30,7 +31,7 @@ CREATE TABLE IF NOT EXISTS libro (
   idioma VARCHAR(45) NULL COMMENT '',
   precio FLOAT NULL COMMENT '',
   ejemplares_disponibles INT NULL COMMENT '',
-  PRIMARY KEY (isbn)  COMMENT '')
+  PRIMARY KEY (id_libro)  COMMENT '')
 ENGINE = InnoDB;
 
 
@@ -54,14 +55,14 @@ CREATE TABLE IF NOT EXISTS operacion (
   id_operacion INT NOT NULL AUTO_INCREMENT COMMENT '',
   tipo_op VARCHAR(10) NULL COMMENT '',
   fecha_recibido DATE NULL COMMENT '',
-  libro_isbn VARCHAR(20) NOT NULL COMMENT '',
+  libro_id_libro INT NOT NULL COMMENT '',
   usuarios_id_usuario INT NOT NULL COMMENT '',
   PRIMARY KEY (id_operacion)  COMMENT '',
-  INDEX fk_operacion_libro_idx (libro_isbn ASC)  COMMENT '',
+  INDEX fk_operacion_libro_idx (libro_id_libro ASC)  COMMENT '',
   INDEX fk_operacion_usuarios1_idx (usuarios_id_usuario ASC)  COMMENT '',
   CONSTRAINT fk_operacion_libro
-    FOREIGN KEY (libro_isbn)
-    REFERENCES lib_america.libro (isbn)
+    FOREIGN KEY (libro_id_libro)
+    REFERENCES lib_america.libro (id_libro)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT fk_operacion_usuarios1

@@ -4,10 +4,10 @@
 <hibernate-mapping>
   <class name="Modelo.modeloOperacion" table="operacion" >
    <id column="id_operacion" name="id_operacion" type="integer">
-   <id column="libro_isbn" name="libro_isbn" type="string">
-   <id column="usuarios_id_usuario" name="usuarios_id_usuario" type="integer">
        <generator class="native"/>
    </id>
+   <property column="libro_id_libro" name="libro_id_libro" type="integer"/>
+   <property column="usuarios_id_usuario" name="usuarios_id_usuario" type="integer"/>
    <property column="tipo_op" name="tipo_op"  type="string"   />
    <property column="fecha_recibido" name="fecha_recibido"   type="date"/>
   </class>

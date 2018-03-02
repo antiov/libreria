@@ -11,42 +11,47 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-public class ConsultaLib extends javax.swing.JFrame implements Runnable{
-    private static String hora,minutos,segundos,ampm;
-    private static String dia,mes,año;
+public class ConsultaLib extends javax.swing.JFrame implements Runnable {
+
+    private static String hora, minutos, segundos, ampm;
+    private static String dia, mes, año;
     private static Calendar calendario1;
-    private static Thread h1; 
-    private modeloUsuario mUser;    
+    private static Thread h1;
+    private modeloUsuario mUser;
+
     @Override
     @SuppressWarnings("SleepWhileInLoop")
-        public void run(){
-            Thread ct = Thread.currentThread();
-            while(ct == h1) {
-                calcula();
-                lblFechaHora.setText(dia+"/"+mes+"/"+año+"\n    "+hora + ":" + minutos + ":" + segundos + " "+ampm+" ");
-                try {
+    public void run() {
+        Thread ct = Thread.currentThread();
+        while (ct == h1) {
+            calcula();
+            lblFechaHora.setText(dia + "/" + mes + "/" + año + "\n    " + hora + ":" + minutos + ":" + segundos + " " + ampm + " ");
+            try {
                 Thread.sleep(1000);
-                }catch(InterruptedException e) {}
+            } catch (InterruptedException e) {
             }
         }
-        
-    public void calcula () {
+    }
+
+    public void calcula() {
         Calendar calendar = new GregorianCalendar();
         Date fechaHoraActual = new Date();
 
         calendar.setTime(fechaHoraActual);
-        ampm = calendar.get(Calendar.AM_PM)==Calendar.AM?"AM":"PM";
-        if(ampm.equals("PM")){
-            int h = calendar.get(Calendar.HOUR_OF_DAY)-12;
-            hora = h>9?""+h:"0"+h;
-        }else{
-            hora = calendar.get(Calendar.HOUR_OF_DAY)>9?""+calendar.get(Calendar.HOUR_OF_DAY):"0"+calendar.get(Calendar.HOUR_OF_DAY); }
-            minutos = calendar.get(Calendar.MINUTE)>9?""+calendar.get(Calendar.MINUTE):"0"+calendar.get(Calendar.MINUTE);
-            segundos = calendar.get(Calendar.SECOND)>9?""+calendar.get(Calendar.SECOND):"0"+calendar.get(Calendar.SECOND);
-            dia = calendar.get(Calendar.DAY_OF_MONTH)>9?""+calendar.get(Calendar.DAY_OF_MONTH):"0"+calendar.get(Calendar.DAY_OF_MONTH);
-            mes = (calendar.get(Calendar.MONTH)+1)>9?""+(calendar.get(Calendar.MONTH)+1):"0"+(calendar.get(Calendar.MONTH)+1);
-            año = calendar.get(Calendar.YEAR)>9?""+calendar.get(Calendar.YEAR):"0"+calendar.get(Calendar.YEAR);
+        ampm = calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+        if (ampm.equals("PM")) {
+            int h = calendar.get(Calendar.HOUR_OF_DAY) - 12;
+            hora = h > 9 ? "" + h : "0" + h;
+        } else {
+            hora = calendar.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendar.get(Calendar.HOUR_OF_DAY) : "0" + calendar.get(Calendar.HOUR_OF_DAY);
+        }
+        minutos = calendar.get(Calendar.MINUTE) > 9 ? "" + calendar.get(Calendar.MINUTE) : "0" + calendar.get(Calendar.MINUTE);
+        segundos = calendar.get(Calendar.SECOND) > 9 ? "" + calendar.get(Calendar.SECOND) : "0" + calendar.get(Calendar.SECOND);
+        dia = calendar.get(Calendar.DAY_OF_MONTH) > 9 ? "" + calendar.get(Calendar.DAY_OF_MONTH) : "0" + calendar.get(Calendar.DAY_OF_MONTH);
+        mes = (calendar.get(Calendar.MONTH) + 1) > 9 ? "" + (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1);
+        año = calendar.get(Calendar.YEAR) > 9 ? "" + calendar.get(Calendar.YEAR) : "0" + calendar.get(Calendar.YEAR);
     }
+
     @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
     public ConsultaLib() {
         initComponents();
@@ -57,6 +62,7 @@ public class ConsultaLib extends javax.swing.JFrame implements Runnable{
         lblCargo1.setText("dueño");
         cmbOpciones.setEnabled(true);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -294,55 +300,36 @@ public class ConsultaLib extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_btnLimpiarLibroActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        
+
         String row = cmbOpciones.getSelectedItem().toString();
         String param = txtParam.getText();
-        try
-        {
-        DAO_libro alib = new DAO_libro();
-        /////////////////////////////////
-         String dat1 = " "; 
-         modeloLibro mLib = new modeloLibro();
-          List<modeloLibro> c = alib.buscaLibros(row, param);
-              Iterator iteraC = c.iterator();
-             
-            if(!c.isEmpty())
-            {
-                while (iteraC.hasNext()) 
-                { 
-                  Object[] tuple = (Object[])iteraC.next();
-               //   mLib = (modeloLibro)iteraC.next();
-                   mLib.setIsbn((String)tuple[0]);
-                   mLib.setTitulo((String)tuple[1]);
-                   mLib.setAutores((String)tuple[2]);
-                   mLib.setEditorial((String)tuple[3]);
-                   mLib.setLugar_impresion((String)tuple[4]);
-                   mLib.setNum_pag(Integer.parseUnsignedInt(tuple[5].toString()));
-                   mLib.setIdioma((String)tuple[6]);
-                   mLib.setPrecio(Integer.parseUnsignedInt(tuple[7].toString()));
-                   mLib.setEjemplares_disponibles(Integer.parseUnsignedInt(tuple[8].toString()));
-                  dat1 += tuple[0] + " " + (String)tuple[1] + " " +  (String)tuple[2]  + " " + (String)tuple[3] + " " +  (String)tuple[4] + "\n";
-                }
+        try {
+            DAO_libro alib = new DAO_libro();
+            /////////////////////////////////
+            modeloLibro mLib = new modeloLibro();
+            List<modeloLibro> libros = alib.buscaLibros(row, param);
+            for (modeloLibro libro : libros) {
+                mLib.setIsbn(libro.isbn);
+                mLib.setTitulo(libro.titulo);
+                mLib.setAutores(libro.autores);
+                mLib.setEditorial(libro.editorial);
+                mLib.setLugar_impresion(libro.lugar_impresion);
+                mLib.setNum_pag(libro.num_pag);
+                mLib.setIdioma(libro.idioma);
+                mLib.setPrecio(libro.precio);
+                mLib.setEjemplares_disponibles(libro.ejemplares_disponibles);
             }
-            else
-            {
-                System.out.println("La busqueda no obtuvo resultados");
-            }
-        ////////////////////////////////
-        this.dispose();
-        
-        this.hide();
-        new InfoLib(mLib).setVisible(true);
-        }
-         catch(Exception ex)
-        {
+            ////////////////////////////////
+            this.dispose();
+
+            this.hide();
+            new InfoLib(mLib).setVisible(true);
+        } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
             //lblResult.setText("No se encuentra el libro");
         }
-       
-        
-        
-        
+
+
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void txtParamKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtParamKeyTyped
@@ -394,13 +381,13 @@ public class ConsultaLib extends javax.swing.JFrame implements Runnable{
                 }
             }
         } catch (ClassNotFoundException ex) {
-          //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-          //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //  java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-           // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // java.util.logging.Logger.getLogger(Alta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -413,11 +400,12 @@ public class ConsultaLib extends javax.swing.JFrame implements Runnable{
             }
         });
     }
+
     public void setmUser(modeloUsuario mUser) {
         this.mUser = mUser;
         lblNombreUser.setText(mUser.nombre);
-        lblCargo1.setText(mUser.cargo);        
-    }    
+        lblCargo1.setText(mUser.cargo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnCerrarSesion;

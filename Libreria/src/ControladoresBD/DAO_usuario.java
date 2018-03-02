@@ -14,22 +14,19 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 public class DAO_usuario {
-        
-    public   List<?> VerUsuario(String nom,String pass)
-    { String algo = "";
+
+    public List<?> VerUsuario(String nom, String pass) {
+        String algo = "";
         SessionFactory sf = NewHibernateUtil.getSessionFactory();
         Session sesion = sf.openSession();
         List<?> i = null;
-        try
-       {
-        Query querys = sesion.createSQLQuery("select * from usuarios where nombre = '" + nom + "' and contrasena = '" + pass + "';");
-        System.out.println("query:\n" + querys + "\n");
+        try {
+            Query querys = sesion.createSQLQuery("select * from usuarios where nombre = '" + nom + "' and contrasena = '" + pass + "';");
+            System.out.println("query:\n" + querys + "\n");
 
-        i = querys.list();
-        
-       }
-        catch(Exception ex)
-        {
+            i = querys.list();
+
+        } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
         }
 //        finally
@@ -38,7 +35,7 @@ public class DAO_usuario {
 //        }
         return i;
     }
-    
+
     //prueba
     /*
     public  List<String> zabbixDB()
@@ -56,123 +53,119 @@ public class DAO_usuario {
         List<String> i = querys.list();
         return i;
     }
-    */
-    
-    public String loginInicio(String usuario,String pass)
-    {
-         SessionFactory sf = NewHibernateUtil.getSessionFactory();
+     */
+    public String loginInicio(String usuario, String pass) {
+        SessionFactory sf = NewHibernateUtil.getSessionFactory();
         Session sesion = sf.openSession();
         Query query = sesion.createSQLQuery("select dato from prueba1.gente where nombre = '" + usuario + "';");
-         String algo = "";
+        String algo = "";
         List<String> i = query.list();
-        
-        if(i.size() <= 0)
-        {
-          algo = "vacio";
-        }
-         else
-        {
+
+        if (i.size() <= 0) {
+            algo = "vacio";
+        } else {
             algo = "ingresar";
         }
-         return algo;
+        return algo;
     }
-   
-     private static SessionFactory factory;
-     
-   public String insertUser(String nombre ,String cargo,String contrasena,String tipo_usuario)
-    {   
+
+    private static SessionFactory factory;
+
+    public String insertUser(String nombre, String cargo, String contrasena, String tipo_usuario) {
         String algo = "";
         factory = new Configuration().configure().buildSessionFactory();
-         Session ss = factory.openSession();
-         modeloUsuario muser = new modeloUsuario(0,nombre , cargo , contrasena , tipo_usuario);
-         
-        try
-         {
-           Transaction tx = ss.beginTransaction();
+        Session ss = factory.openSession();
+        modeloUsuario muser = new modeloUsuario(0, nombre, cargo, contrasena, tipo_usuario);
 
-          ss.save(muser);
-         tx.commit();
-            
-             algo = "Usuario Agregado";
-         }
-        catch(Exception ex)
-        {
+        try {
+            Transaction tx = ss.beginTransaction();
+
+            ss.save(muser);
+            tx.commit();
+
+            algo = "Usuario Agregado";
+        } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
             algo = "Error query " + ex.getMessage();
+        } finally {
+
         }
-        finally
-        {
-           
-        }
-      return algo;
+        return algo;
     }
-   
-   public String updateUser(modeloUsuario muser)
-   {
-     String algo = "";  
-        
+
+    public String updateUser(modeloUsuario muser) {
+        String algo = "";
+
         factory = new Configuration().configure().buildSessionFactory();
-         Session ss = factory.openSession();
-        try
-         {
-            
-           Transaction tx = ss.beginTransaction();
-          ss.update(muser);
-         tx.commit();
-            
-             algo = "¡Usuario actualizado!";
-         }
-        catch(Exception ex)
-        {
+        Session ss = factory.openSession();
+        try {
+
+            Transaction tx = ss.beginTransaction();
+            ss.update(muser);
+            tx.commit();
+
+            algo = "¡Usuario actualizado!";
+        } catch (Exception ex) {
             System.out.println("¡Error!" /*+ ex.getMessage()*/);
             algo = "¡Error!" /*+ ex.getMessage()*/;
         }
-        finally
-        {
-           
+
+        return algo;
+    }
+
+    public String deleteUser(modeloUsuario muser) {
+
+        String algo = "";
+        
+        factory = new Configuration().configure().buildSessionFactory();
+        Session ss = factory.openSession();
+        
+        try {
+
+            Transaction tx = ss.beginTransaction();
+            ss.delete(muser);
+            tx.commit();
+
+            algo = "¡Usuario eliminado!";
+        } catch (Exception ex) {
+            System.out.println("¡Error!" /*+ ex.getMessage()*/);
+            algo = "¡Error!" /*+ ex.getMessage()*/;
         }
         
         return algo;
-   }
-   
-   
-       public   List<?> VerTodosUsuarios()
-    { String algo = "";
+    }
+
+    public List<?> VerTodosUsuarios() {
+        String algo = "";
         SessionFactory sf = NewHibernateUtil.getSessionFactory();
         Session sesion = sf.openSession();
         List<?> i = null;
-        try
-       {
-        Query querys = sesion.createSQLQuery("select * from usuarios;");
-        System.out.println("query:\n" + querys + "\n");
+        try {
+            Query querys = sesion.createSQLQuery("select * from usuarios;");
+            System.out.println("query:\n" + querys + "\n");
 
-        i = querys.list();
-        
-       }
-        catch(Exception ex)
-        {
+            i = querys.list();
+
+        } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
-        }
-        finally
-        {
+        } finally {
             sf.close();
         }
         return i;
     }
-       
-       
-      public List<modeloUsuario> todosUsers(){
-     
-      List<modeloUsuario> lista  = null;
-    String algo = "";
 
-         factory = new Configuration().configure().buildSessionFactory();
-         Session ss = factory.openSession();
-       Query query = ss.createSQLQuery("SELECT * FROM usuarios;");
-        List<Object []> listDatos = query.list();
-      
+    public List<modeloUsuario> todosUsers() {
+
+        List<modeloUsuario> lista = null;
+        String algo = "";
+
+        factory = new Configuration().configure().buildSessionFactory();
+        Session ss = factory.openSession();
+        Query query = ss.createSQLQuery("SELECT * FROM usuarios;");
+        List<Object[]> listDatos = query.list();
+
         lista = query.list();
-       
+
         return lista;
     }
 }

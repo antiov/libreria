@@ -3,8 +3,10 @@
 
 <hibernate-mapping>
   <class name="Modelo.modeloLibro" table="libro" >
-   <id column="isbn" name="isbn" type="string">
+   <id column="id_libro" name="id_libro" type="integer">
+       <generator class="native"/>
    </id>
+   <property column="isbn" name="isbn"  type="string"   />
    <property column="titulo" name="titulo"  type="string"   />
    <property column="autores" name="autores"   type="string"/>
    <property column="editorial" name="editorial"   type="string"/>

@@ -64,7 +64,7 @@ public class InfoLib extends javax.swing.JFrame implements Runnable{
         lblNombreUser.setText("admin");
         lblCargo1.setText("dueño");
         
-        txtISBN1.setText(mLib.getIsbn());
+        txtISBN1.setText(mLib.getIsbn().toString());
         txtISBN1.setEditable(false);
         txtTitulo.setText(mLib.getTitulo());
         txtTitulo.setEditable(false);

@@ -578,7 +578,7 @@ public class CambiosLib extends javax.swing.JFrame implements Runnable{
          mLib.setLugar_impresion(txtLugarImp.getText());
          mLib.setNum_pag(Integer.parseUnsignedInt(  txtNumPag.getText() ));
          mLib.setIdioma(txtIdioma.getText());
-         mLib.setPrecio(Integer.parseUnsignedInt( txtPrecio.getText() ));
+         mLib.setPrecio(Float.parseFloat(txtPrecio.getText()));
          mLib.setEjemplares_disponibles(0);
     }
     

@@ -205,6 +205,7 @@ public class Inicio extends javax.swing.JFrame {
                 { 
                   Object[] tuple = (Object[])iterador.next(); 
                   //dat1 += tuple[0] + " " + (String)tuple[1] + " " +  (String)tuple[2]  + " " + (String)tuple[3] + " " +  (String)tuple[4] + "\n";
+                  mUser.setId_usuario((Integer)tuple[0]);
                   mUser.setNombre((String)tuple[1]);
                   mUser.setCargo((String)tuple[2]);
                   mUser.setTipo_usuario((String)tuple[4]);
