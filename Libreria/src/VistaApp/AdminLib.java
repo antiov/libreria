@@ -288,9 +288,10 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
     private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         this.dispose();
         this.hide();
-        ConsultaLib cl = new ConsultaLib();
-        cl.setmUser(mUser);
-        cl.setVisible(true);
+        BajaLib bl = new BajaLib();
+        bl.setmUser(mUser);
+        bl.initBuscar();
+        bl.setVisible(true);
     }//GEN-LAST:event_btnConsultaActionPerformed
 
     private void btnCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiosActionPerformed

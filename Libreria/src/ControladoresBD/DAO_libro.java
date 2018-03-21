@@ -108,10 +108,10 @@ public class DAO_libro {
         try {
             Transaction tx = ss.beginTransaction();
 
-            ss.save(mLib);
+            ss.saveOrUpdate(mLib);
             tx.commit();
 
-            algo = "Libro Agregado";
+            algo = "Libro guardado correctamente.";
         } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
             return null;

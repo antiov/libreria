@@ -29,13 +29,11 @@ public class DAO_operacion {
             ss.save(mOp);
             tx.commit();
 
-            algo = "Operacion Agregada";
+            algo = "Operacion registrada correctamente.";
         } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
-            algo = "Error query " + ex.getMessage();
-        } finally {
-
-        }
+            return null;
+        } 
         return algo;
     }
 }

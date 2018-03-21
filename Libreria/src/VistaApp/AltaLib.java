@@ -14,9 +14,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class AltaLib extends javax.swing.JFrame implements Runnable {
-
+    
     private static String hora, minutos, segundos, ampm;
     private static String dia, mes, año;
     private static Calendar calendario1;
@@ -24,7 +25,9 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
     private modeloUsuario mUser;
     private modeloLibro mLib = new modeloLibro();
     private modeloOperacion mOp = new modeloOperacion();
-
+    private final String OP_TRUEQUE = "Trueque";
+    private final String OP_COMPRA = "Compra";
+    
     @Override
     @SuppressWarnings("SleepWhileInLoop")
     public void run() {
@@ -38,11 +41,11 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
             }
         }
     }
-
+    
     public void calcula() {
         Calendar calendar = new GregorianCalendar();
         Date fechaHoraActual = new Date();
-
+        
         calendar.setTime(fechaHoraActual);
         ampm = calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
         if (ampm.equals("PM")) {
@@ -57,9 +60,9 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         mes = (calendar.get(Calendar.MONTH) + 1) > 9 ? "" + (calendar.get(Calendar.MONTH) + 1) : "0" + (calendar.get(Calendar.MONTH) + 1);
         año = calendar.get(Calendar.YEAR) > 9 ? "" + calendar.get(Calendar.YEAR) : "0" + calendar.get(Calendar.YEAR);
     }
-
+    
     @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
-
+    
     public AltaLib() {
         initComponents();
         h1 = new Thread(this);
@@ -68,7 +71,7 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         lblNombreUser.setText("admin");
         lblCargo1.setText("dueño");
         lbResult.setVisible(false);
-    }
+    }    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,7 +114,6 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         jLabel25 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         txtISBN = new javax.swing.JTextField();
-        btnConsultar = new javax.swing.JToggleButton();
         btnLimpiarLibro = new javax.swing.JToggleButton();
         txtEjemplaresRec = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
@@ -119,6 +121,10 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         rbnCompra = new javax.swing.JRadioButton();
         rbnTrueque = new javax.swing.JRadioButton();
         lbResult = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        txtEjemplaresStock = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        txtEjemplaresTot = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alta de libros");
@@ -300,15 +306,6 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        btnConsultar.setBackground(new java.awt.Color(255, 255, 255));
-        btnConsultar.setFont(new java.awt.Font("Cambria Math", 1, 13)); // NOI18N
-        btnConsultar.setText("CONSULTAR");
-        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarActionPerformed(evt);
-            }
-        });
-
         btnLimpiarLibro.setBackground(new java.awt.Color(255, 255, 255));
         btnLimpiarLibro.setFont(new java.awt.Font("Cambria Math", 1, 13)); // NOI18N
         btnLimpiarLibro.setText("LIMPIAR");
@@ -318,9 +315,9 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        txtEjemplaresRec.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEjemplaresRecActionPerformed(evt);
+        txtEjemplaresRec.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEjemplaresRecFocusLost(evt);
             }
         });
         txtEjemplaresRec.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -352,16 +349,94 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         lbResult.setForeground(new java.awt.Color(255, 51, 0));
         lbResult.setText("Resultado query!!");
 
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabel20.setText("Ejemplares en stock :");
+
+        txtEjemplaresStock.setToolTipText("");
+        txtEjemplaresStock.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEjemplaresStockFocusLost(evt);
+            }
+        });
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabel21.setText("Total de ejemplares:");
+
+        txtEjemplaresTot.setEditable(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel19))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel14)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                    .addGap(10, 10, 10)
+                                                    .addComponent(jLabel15))
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jLabel12)
+                                                    .addComponent(jLabel11)))
+                                            .addComponent(jLabel22)
+                                            .addComponent(jLabel24))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(lbResult, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                                                .addComponent(btnAgregar)
+                                                .addGap(104, 104, 104))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(0, 0, Short.MAX_VALUE)
+                                                        .addComponent(btnCerrarSesion))
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                            .addComponent(txtTitulo, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(txtAutor, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                    .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                    .addComponent(txtLugarImp, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                        .addComponent(jLabel25)
+                                                                        .addGap(22, 22, 22)
+                                                                        .addComponent(jLabel21))
+                                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                        .addComponent(txtNumPag, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(jLabel20))
+                                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                        .addComponent(txtIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(jLabel18)))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                    .addComponent(txtEjemplaresRec, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                                                                    .addComponent(txtEjemplaresStock)
+                                                                    .addComponent(txtEjemplaresTot))))
+                                                        .addGap(49, 49, 49)
+                                                        .addComponent(btnRegresa)))
+                                                .addGap(69, 69, 69))))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(7, 7, 7)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,77 +455,23 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
                                         .addComponent(jLabel2)
                                         .addGap(18, 18, 18)
                                         .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnLimpiarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())
+                                        .addGap(148, 148, 148)
+                                        .addComponent(btnLimpiarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel19)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblNombreUser)
+                                .addGap(119, 119, 119)
+                                .addComponent(lblFechaHora))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel14)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(10, 10, 10)
-                                            .addComponent(jLabel15))
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jLabel11)))
-                                    .addComponent(jLabel22)
-                                    .addComponent(jLabel24))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTitulo)
-                                    .addComponent(txtAutor)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(txtNumPag, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(45, 45, 45)
-                                                .addComponent(jLabel18)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtEjemplaresRec, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtLugarImp, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(jLabel25)))
-                                                .addGap(45, 45, 45)
-                                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addGap(49, 49, 49)
-                                .addComponent(btnRegresa)
-                                .addGap(69, 69, 69))))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblNombreUser)
-                        .addGap(119, 119, 119)
-                        .addComponent(lblFechaHora))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblCargo1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCerrarSesion)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblCargo1)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(60, 60, 60))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(174, 174, 174)
-                .addComponent(lbResult, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -478,7 +499,6 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
                                     .addComponent(txtISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnConsultar)
                                     .addComponent(btnLimpiarLibro)))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel27)
@@ -506,28 +526,29 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
                     .addComponent(txtLugarImp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
                     .addComponent(txtNumPag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEjemplaresRec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19))
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20)
+                    .addComponent(txtEjemplaresStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel22)
-                                    .addComponent(txtIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel24)
-                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel25)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(btnAgregar)))
-                        .addGap(72, 72, 72)
-                        .addComponent(lbResult)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22)
+                            .addComponent(txtIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18)
+                            .addComponent(txtEjemplaresRec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel24)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25)
+                            .addComponent(jLabel21)
+                            .addComponent(txtEjemplaresTot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbResult)
+                            .addComponent(btnAgregar))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegresa)
@@ -613,15 +634,8 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
     private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
         //validarNum(evt);
     }//GEN-LAST:event_txtPrecioKeyTyped
-
-    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        String isb = txtISBN.getText();
-    }//GEN-LAST:event_btnConsultarActionPerformed
-
-    private void isbnChanged() {
-    }
-
-    private void btnLimpiarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLibroActionPerformed
+    
+    private void limpiarFormulario() {
         txtISBN.setText("");
         txtTitulo.setText("");
         txtAutor.setText("");
@@ -631,61 +645,109 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         txtIdioma.setText("");
         txtPrecio.setText("");
         txtEjemplaresRec.setText("");
+        txtEjemplaresStock.setText("");
+        txtEjemplaresTot.setText("");
+        mLib = new modeloLibro();
+        mOp = new modeloOperacion();
+    }
+
+    private void btnLimpiarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLibroActionPerformed
+        limpiarFormulario();
     }//GEN-LAST:event_btnLimpiarLibroActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
-        getVariables();
 
         DAO_libro dlib = new DAO_libro();
         DAO_operacion dop = new DAO_operacion();
-
+        
         try {
+            getVariables();
+            //Se inserta o actualizan los datos del libro
             if (dlib.insertLibro(mLib) != null) {
                 List<modeloLibro> libros = dlib.buscaLibros("isbn", mLib.isbn);
                 if (libros.size() == 1) {
                     mLib = libros.get(0);
                     mOp.libro_id_libro = mLib.id_libro;
-                    dop.insertOperacion(mOp);
-                    lbResult.setText("Datos Agregados");
-                    lbResult.setVisible(true);
+                    //Se inserta la operacion
+                    if (dop.insertOperacion(mOp) != null) {
+                        if (btnAgregar.getText().equals("DAR DE BAJA")) {
+                            mOp.tipo_op = "El libro ya fue dado de baja";
+                        }
+                        //Se identifica si fue trueque(ingresar datos de la baja del libro que sale)
+                        if (mOp.tipo_op.equals(OP_TRUEQUE)) {
+                            JOptionPane.showMessageDialog(this, "La alta del libro fue ingresada correctamente, prosiga con la baja del libro por trueque.");
+                            limpiarFormulario();
+                            jLabel1.setText("Ingrese información de baja por trueque");
+                            jLabel27.setVisible(false);
+                            rbnCompra.setVisible(false);
+                            rbnTrueque.setVisible(false);
+                            jLabel18.setText("Ejemplares que salen");
+                            btnAgregar.setText("DAR DE BAJA");
+                        } else {//Si es una compra, sólo se muestra el mensaje de exito
+                            lbResult.setText("Operación realizada correctamente");
+                            lbResult.setVisible(true);
+                            btnAgregar.setVisible(false);
+                        }
+                    } else {
+                        lbResult.setText("Hubo un error al insertar el libro. Intente más tarde.");
+                        lbResult.setVisible(true);
+                    }
                 }
+            } else {
+                lbResult.setText("Hubo un error al insertar el libro. Intente más tarde.");
+                lbResult.setVisible(true);
             }
-
+        } catch (ParseException pe) {
+            lbResult.setText("Por favor revisar la información ingresada.");
+            lbResult.setVisible(true);
+            System.out.println("Error ParseException " + pe.getMessage());
         } catch (Exception ex) {
-            lbResult.setText(ex.getMessage());
+            lbResult.setText("Hubo un error al intentar registrar la operación.");
+            lbResult.setVisible(true);
             System.out.println("Error query " + ex.getMessage());
         }
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void getVariables() //tomamos todas las variables del form
+    /**
+     * Metodo que llena valores en el modelo del formulario
+     *
+     * @throws ParseException
+     */
+    private void getVariables() throws ParseException //tomamos todas las variables del form
     {
-        try //tomamos todas las variables del form
-        {
-            mLib.setIsbn(txtISBN.getText());
-            mLib.setTitulo(txtTitulo.getText());
-            mLib.setAutores(txtAutor.getText());
-            mLib.setEditorial(txtEditorial.getText());
-            mLib.setLugar_impresion(txtLugarImp.getText());
-            mLib.setNum_pag(Integer.parseUnsignedInt(txtNumPag.getText()));
-            mLib.setIdioma(txtIdioma.getText());
-            mLib.setPrecio(Float.parseFloat(txtPrecio.getText()));
-            mLib.setEjemplares_disponibles(Integer.parseInt(txtEjemplaresRec.getText()));
-
-            mOp.setFecha_recibido(new SimpleDateFormat("dd/MM/yyyy").parse(lblFechaHora.getText().substring(0, 10)));
-            mOp.libro_isbn = txtISBN.getText();
-            String tipoOp = (rbnCompra.isSelected()) ? "Compra" : "";
-            if (tipoOp.isEmpty()) {
-                tipoOp = (rbnTrueque.isSelected()) ? "Trueque" : "";
-            }
-            mOp.tipo_op = tipoOp;
-            mOp.usuarios_id_usuario = mUser.id_usuario;
-        } catch (ParseException ex) {
-            Logger.getLogger(AltaLib.class.getName()).log(Level.SEVERE, null, ex);
+        //tomamos todas las variables del form        
+        mLib.setIsbn(txtISBN.getText());
+        mLib.setTitulo(txtTitulo.getText());
+        mLib.setAutores(txtAutor.getText());
+        mLib.setEditorial(txtEditorial.getText());
+        mLib.setLugar_impresion(txtLugarImp.getText());
+        mLib.setNum_pag(Integer.parseUnsignedInt(txtNumPag.getText()));
+        mLib.setIdioma(txtIdioma.getText());
+        mLib.setPrecio(Float.parseFloat(txtPrecio.getText()));
+        if (txtEjemplaresTot.getText().isEmpty()) {
+            throw new ParseException("No se ha ingresado el número de ejemplares recibidos.", 1);
         }
+        mLib.setEjemplares_disponibles(Integer.parseInt(txtEjemplaresTot.getText()));
+        if (lblFechaHora.getText().isEmpty()) {
+            throw new ParseException("No se ha ingresado una fecha.", 1);
+        }
+        mOp.setFecha_recibido(new SimpleDateFormat("dd/MM/yyyy").parse(lblFechaHora.getText().substring(0, 10)));
+        mOp.libro_isbn = txtISBN.getText();
+        String tipoOp = (rbnCompra.isSelected()) ? OP_COMPRA : "";
+        if (tipoOp.isEmpty()) {
+            tipoOp = (rbnTrueque.isSelected()) ? OP_TRUEQUE : "";
+        }
+        if (tipoOp.isEmpty()) {
+            throw new ParseException("No se ha seleccionado una operación.", 1);
+        }
+        mOp.tipo_op = tipoOp;
+        mOp.usuarios_id_usuario = mUser.id_usuario;
     }
 
+    /**
+     * Metodo que visualiza los valores del libro en pantalla
+     */
     private void setValoresLibro() //tomamos todas las variables del form
     {
         txtISBN.setText(mLib.isbn.toString());
@@ -696,12 +758,8 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         txtNumPag.setText(mLib.num_pag.toString());
         txtIdioma.setText(mLib.idioma);
         txtPrecio.setText(mLib.precio.toString());
-        txtEjemplaresRec.setText(mLib.ejemplares_disponibles.toString());
+        txtEjemplaresStock.setText(mLib.ejemplares_disponibles.toString());
     }
-
-    private void txtEjemplaresRecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEjemplaresRecActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEjemplaresRecActionPerformed
 
     private void txtEjemplaresRecKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEjemplaresRecKeyTyped
         // TODO add your handling code here:
@@ -719,6 +777,33 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
         }
         setValoresLibro();
     }//GEN-LAST:event_txtISBNFocusLost
+
+    private void txtEjemplaresStockFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEjemplaresStockFocusLost
+        calculaTotalLibros();
+    }//GEN-LAST:event_txtEjemplaresStockFocusLost
+
+    private void txtEjemplaresRecFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEjemplaresRecFocusLost
+        calculaTotalLibros();
+    }//GEN-LAST:event_txtEjemplaresRecFocusLost
+
+    /**
+     * Metodo para calcular los libros que resultaran de la operacion de alta o
+     * baja
+     */
+    private void calculaTotalLibros() {
+        try {
+            if (btnAgregar.getText().equals("DAR DE BAJA")) {
+                Integer stock = Integer.parseInt(txtEjemplaresStock.getText());
+                Integer recibidos = Integer.parseInt(txtEjemplaresRec.getText());
+                txtEjemplaresTot.setText(stock - recibidos + "");
+            } else {
+                Integer stock = Integer.parseInt(txtEjemplaresStock.getText());
+                Integer recibidos = Integer.parseInt(txtEjemplaresRec.getText());
+                txtEjemplaresTot.setText(stock + recibidos + "");
+            }
+        } catch (Exception e) {
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -757,7 +842,7 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
             }
         });
     }
-
+    
     public void setmUser(modeloUsuario mUser) {
         this.mUser = mUser;
         lblNombreUser.setText(mUser.nombre);
@@ -768,7 +853,6 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
     private javax.swing.ButtonGroup Alta;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JToggleButton btnCerrarSesion;
-    private javax.swing.JToggleButton btnConsultar;
     private javax.swing.JToggleButton btnLimpiarLibro;
     private javax.swing.JToggleButton btnRegresa;
     private com.toedter.calendar.JDateChooser calendario;
@@ -780,6 +864,8 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
@@ -799,6 +885,8 @@ public class AltaLib extends javax.swing.JFrame implements Runnable {
     private javax.swing.JTextField txtAutor;
     private javax.swing.JTextField txtEditorial;
     private javax.swing.JTextField txtEjemplaresRec;
+    private javax.swing.JTextField txtEjemplaresStock;
+    private javax.swing.JTextField txtEjemplaresTot;
     private javax.swing.JTextField txtISBN;
     private javax.swing.JTextField txtIdioma;
     private javax.swing.JTextField txtLugarImp;
