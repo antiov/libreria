@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -115,7 +116,7 @@ public class DAO_libro {
         } catch (Exception ex) {
             System.out.println("Error query " + ex.getMessage());
             return null;
-        } 
+        }
         return algo;
     }
 
@@ -180,6 +181,48 @@ public class DAO_libro {
         factory = new Configuration().configure().buildSessionFactory();
         Session ss = factory.openSession();
         Query query = ss.createSQLQuery("SELECT * FROM libro where " + row + " = " + param + ";");
+
+        lista = query.list();
+
+        if (!lista.isEmpty()) {
+            Iterator iteraC = lista.iterator();
+            while (iteraC.hasNext()) {
+                Object[] tuple = (Object[]) iteraC.next();
+                modeloLibro libro = new modeloLibro();/*
+                    Integer.parseInt((String) tuple[0]), (String) tuple[1],
+                    (String) tuple[2], (String) tuple[3],
+                    (String) tuple[4], Integer.parseInt((String) tuple[5]),
+                    (String) tuple[6], (Float) tuple[7],
+                    Integer.parseInt((String) tuple[8]));*/
+                libro.id_libro = (Integer) tuple[0];
+                libro.isbn = (String) tuple[1];
+                libro.titulo = (String) tuple[2];
+                libro.autores = (String) tuple[3];
+                libro.editorial = (String) tuple[4];
+                libro.lugar_impresion = (String) tuple[5];
+                libro.num_pag = (Integer) tuple[6];
+                libro.idioma = (String) tuple[7];
+                libro.precio = (Float) tuple[8];
+                libro.ejemplares_disponibles = (Integer) tuple[9];
+                listaLibros.add(libro);
+            }
+        }
+        return listaLibros;
+    }
+
+    public List<modeloLibro> buscaLibroslLike(Map<String, String> parametros) {
+        List<modeloLibro> listaLibros = new ArrayList<>();
+        List lista = null;
+
+        factory = new Configuration().configure().buildSessionFactory();
+        Session ss = factory.openSession();
+
+        String queryStr = "SELECT * FROM libro where ";
+
+        for (String key : parametros.keySet()) {
+            queryStr += key + " like \"%" + parametros.get(key) + "%\" and ";
+        }
+        Query query = ss.createSQLQuery(queryStr.substring(0, queryStr.length() - 4));
 
         lista = query.list();
 

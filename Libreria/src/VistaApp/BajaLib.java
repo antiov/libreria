@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BajaLib extends javax.swing.JFrame implements Runnable {
 
@@ -87,9 +89,10 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
         txtEjemplaresTot.setVisible(true);
         txtTituloSearch.setVisible(true);
         txtAutorSearch.setVisible(true);
-        txtEditorialSearch.setVisible(true);        
-        btnDarBaja.setVisible(false);
+        txtEditorialSearch.setVisible(true);
+        btnDarBaja.setText("ACTUALIZAR");
         jLabel1.setText("Búsqueda de libro");
+        setTitle("Consulta y actualiza");
     }
 
     /**
@@ -335,15 +338,33 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Ingrese Autores:");
 
+        txtTituloSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTituloSearchFocusLost(evt);
+            }
+        });
+
         jLabel8.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 102));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Ingrese Título:");
 
+        txtAutorSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtAutorSearchFocusLost(evt);
+            }
+        });
+
         jLabel9.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 102));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Ingrese Editorial:");
+
+        txtEditorialSearch.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtEditorialSearchFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -469,7 +490,7 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
                         .addGap(53, 53, 53))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                        .addGap(18, 18, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtISBN_save, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -599,7 +620,7 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_txtPrecioKeyTyped
 
     private void limpiarFormulario() {
-        txtISBN.setText("");
+        txtISBN_save.setText("");
         txtTitulo.setText("");
         txtAutor.setText("");
         txtEditorial.setText("");
@@ -607,6 +628,7 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
         txtNumPag.setText("");
         txtIdioma.setText("");
         txtPrecio.setText("");
+        txtEjemplaresTot.setText("");
         mLib = new modeloLibro();
         mOp = new modeloOperacion();
     }
@@ -622,21 +644,34 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
 
         try {
             getVariables();
+            //Revisa si es baja o actualizacion
+            if (btnDarBaja.getText().equals("DAR DE BAJA")) {
+                if (mLib.ejemplares_disponibles > 0) {
+                    mLib.ejemplares_disponibles--;
+                } else {
+                    throw new ParseException("El numero de ejemplares es <= 0", 1);
+                }
+            }
             //Se inserta o actualizan los datos del libro
             if (dlib.insertLibro(mLib) != null) {
-                List<modeloLibro> libros = dlib.buscaLibros("isbn", mLib.isbn);
-                if (libros.size() == 1) {
-                    mLib = libros.get(0);
-                    mOp.libro_id_libro = mLib.id_libro;
-                    //Se inserta la operacion
-                    if (dop.insertOperacion(mOp) != null) {
-                        lbResult.setText("Operación realizada correctamente");
-                        lbResult.setVisible(true);
-                        btnDarBaja.setVisible(false);
-                    } else {
-                        lbResult.setText("Hubo un error al insertar el libro. Intente más tarde.");
-                        lbResult.setVisible(true);
+                if (btnDarBaja.getText().equals("DAR DE BAJA")) {
+                    List<modeloLibro> libros = dlib.buscaLibros("isbn", mLib.isbn);
+                    if (libros.size() == 1) {
+                        mLib = libros.get(0);
+                        mOp.libro_id_libro = mLib.id_libro;
+                        //Se inserta la operacion
+                        if (dop.insertOperacion(mOp) != null) {
+                            lbResult.setText("Operación realizada correctamente");
+                            lbResult.setVisible(true);
+                            btnDarBaja.setVisible(false);
+                        } else {
+                            lbResult.setText("Hubo un error al insertar el libro. Intente más tarde.");
+                            lbResult.setVisible(true);
+                        }
                     }
+                } else {
+                    lbResult.setText("Operación realizada correctamente");
+                    lbResult.setVisible(true);
                 }
             } else {
                 lbResult.setText("Hubo un error al insertar el libro. Intente más tarde.");
@@ -675,11 +710,6 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
         mOp.setFecha_recibido(new SimpleDateFormat("dd/MM/yyyy").parse(lblFechaHora.getText().substring(0, 10)));
         mOp.libro_isbn = txtISBN.getText();
         mOp.tipo_op = "Baja";
-        if (mLib.ejemplares_disponibles > 0) {
-            mLib.ejemplares_disponibles--;
-        } else {
-            throw new ParseException("El numero de ejemplares es <= 0", 1);
-        }
         mOp.usuarios_id_usuario = mUser.id_usuario;
     }
 
@@ -688,7 +718,7 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
      */
     private void setValoresLibro() //tomamos todas las variables del form
     {
-        txtISBN.setText(mLib.isbn.toString());
+        txtISBN_save.setText(mLib.isbn.toString());
         txtTitulo.setText(mLib.titulo);
         txtAutor.setText(mLib.autores);
         txtEditorial.setText(mLib.editorial);
@@ -696,16 +726,61 @@ public class BajaLib extends javax.swing.JFrame implements Runnable {
         txtNumPag.setText(mLib.num_pag.toString());
         txtIdioma.setText(mLib.idioma);
         txtPrecio.setText(mLib.precio.toString());
+        txtEjemplaresTot.setText(mLib.ejemplares_disponibles.toString());
+    }
+
+    /**
+     * Se verifica que se haya introducido correctamente informacion en el
+     * formulario de busqueda de libros
+     */
+    private void verificaDatosFormSearch() {
+        DAO_libro daoLibro = new DAO_libro();
+        Map<String, String> parametros = new HashMap<>();
+        if (!txtTituloSearch.getText().isEmpty()) {
+            parametros.put("titulo", txtTituloSearch.getText());
+        }
+        if (!txtISBN.getText().isEmpty()) {
+            parametros.put("isbn", txtISBN.getText());
+        }
+        if (!txtAutorSearch.getText().isEmpty()) {
+            parametros.put("autores", txtAutorSearch.getText());
+        }
+        if (!txtEditorialSearch.getText().isEmpty()) {
+            parametros.put("editorial", txtEditorialSearch.getText());
+        }
+        if (!parametros.isEmpty()) {
+            List<modeloLibro> libros = daoLibro.buscaLibroslLike(parametros);
+            if (libros.size() == 1) {
+                mLib = libros.get(0);
+            }
+            setValoresLibro();
+        }
     }
 
     private void txtISBNFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtISBNFocusLost
-        DAO_libro daoLibro = new DAO_libro();
-        List<modeloLibro> libros = daoLibro.buscaLibros("isbn", txtISBN.getText());
-        if (libros.size() == 1) {
-            mLib = libros.get(0);
+        if (btnDarBaja.getText().equals("DAR DE BAJA")) {
+            DAO_libro daoLibro = new DAO_libro();
+            List<modeloLibro> libros = daoLibro.buscaLibros("isbn", txtISBN.getText());
+            if (libros.size() == 1) {
+                mLib = libros.get(0);
+            }
+            setValoresLibro();
+        } else {
+            verificaDatosFormSearch();
         }
-        setValoresLibro();
     }//GEN-LAST:event_txtISBNFocusLost
+
+    private void txtTituloSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTituloSearchFocusLost
+        verificaDatosFormSearch();
+    }//GEN-LAST:event_txtTituloSearchFocusLost
+
+    private void txtAutorSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAutorSearchFocusLost
+        verificaDatosFormSearch();
+    }//GEN-LAST:event_txtAutorSearchFocusLost
+
+    private void txtEditorialSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEditorialSearchFocusLost
+        verificaDatosFormSearch();
+    }//GEN-LAST:event_txtEditorialSearchFocusLost
 
     /**
      * @param args the command line arguments

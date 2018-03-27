@@ -70,7 +70,6 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
         btnRegresa = new javax.swing.JToggleButton();
         btnCerrarSesion = new javax.swing.JToggleButton();
         btnConsulta = new javax.swing.JToggleButton();
-        btnCambios = new javax.swing.JToggleButton();
         btnAlta = new javax.swing.JToggleButton();
         btnBaja = new javax.swing.JToggleButton();
 
@@ -135,21 +134,11 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
         btnConsulta.setBackground(new java.awt.Color(255, 255, 255));
         btnConsulta.setFont(new java.awt.Font("Cambria", 1, 30)); // NOI18N
         btnConsulta.setForeground(new java.awt.Color(0, 153, 0));
-        btnConsulta.setText("CONSULTA");
+        btnConsulta.setText("CONSULTA Y ACTUALIZA");
         btnConsulta.setAutoscrolls(true);
         btnConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaActionPerformed(evt);
-            }
-        });
-
-        btnCambios.setBackground(new java.awt.Color(255, 255, 255));
-        btnCambios.setFont(new java.awt.Font("Cambria", 1, 30)); // NOI18N
-        btnCambios.setForeground(new java.awt.Color(0, 153, 153));
-        btnCambios.setText("CAMBIOS");
-        btnCambios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCambiosActionPerformed(evt);
             }
         });
 
@@ -207,13 +196,12 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(200, 200, 200)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAlta, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                            .addComponent(btnConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCambios, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(292, Short.MAX_VALUE))
+                            .addComponent(btnConsulta)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(257, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,9 +224,7 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
                             .addComponent(btnAlta, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBaja, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(43, 43, 43)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCambios, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(324, 324, 324))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,7 +260,7 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
     private void btnRegresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresaActionPerformed
         this.dispose();
         this.hide();
-        if (mUser.getTipo_usuario().equals("administrador") || mUser.getTipo_usuario().equals("admin")) {
+        if (mUser.getTipo_usuario().equalsIgnoreCase("administrador") || mUser.getTipo_usuario().equalsIgnoreCase("admin")) {
             OpcionesAdmin oa = new OpcionesAdmin();
             oa.setmUser(mUser);
             oa.setVisible(true);
@@ -293,14 +279,6 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
         bl.initBuscar();
         bl.setVisible(true);
     }//GEN-LAST:event_btnConsultaActionPerformed
-
-    private void btnCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiosActionPerformed
-        this.dispose();
-        this.hide();
-        CambiosLib cl = new CambiosLib();
-        cl.setmUser(mUser);
-        cl.setVisible(true);
-    }//GEN-LAST:event_btnCambiosActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
         this.dispose();
@@ -365,7 +343,6 @@ public class AdminLib extends javax.swing.JFrame implements Runnable {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnAlta;
     private javax.swing.JToggleButton btnBaja;
-    private javax.swing.JToggleButton btnCambios;
     private javax.swing.JToggleButton btnCerrarSesion;
     private javax.swing.JToggleButton btnConsulta;
     private javax.swing.JToggleButton btnRegresa;

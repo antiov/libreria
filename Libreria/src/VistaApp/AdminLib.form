@@ -106,17 +106,16 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="200" pref="200" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btnAlta" max="32767" attributes="0"/>
-                                  <Component id="btnConsulta" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="btnBaja" min="-2" pref="187" max="-2" attributes="0"/>
-                                  <Component id="btnCambios" min="-2" pref="187" max="-2" attributes="0"/>
+                                  <Component id="btnConsulta" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="btnAlta" min="-2" pref="201" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="btnBaja" min="-2" pref="201" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="292" max="32767" attributes="0"/>
+                      <EmptySpace pref="257" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -144,10 +143,7 @@
                                   <Component id="btnBaja" alignment="3" min="-2" pref="82" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnCambios" alignment="3" min="-2" pref="82" max="-2" attributes="0"/>
-                                  <Component id="btnConsulta" alignment="3" min="-2" pref="82" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="btnConsulta" min="-2" pref="82" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="324" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -273,28 +269,11 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="99" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="CONSULTA"/>
+                <Property name="text" type="java.lang.String" value="CONSULTA Y ACTUALIZA"/>
                 <Property name="autoscrolls" type="boolean" value="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConsultaActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JToggleButton" name="btnCambios">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Cambria" size="30" style="1"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="99" red="0" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="CAMBIOS"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCambiosActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="btnAlta">

@@ -227,7 +227,7 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="btnCerrarSesion" min="-2" pref="49" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -586,6 +586,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtTituloSearch">
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtTituloSearchFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
@@ -600,6 +603,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtAutorSearch">
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtAutorSearchFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
               <Properties>
@@ -614,6 +620,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtEditorialSearch">
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtEditorialSearchFocusLost"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
