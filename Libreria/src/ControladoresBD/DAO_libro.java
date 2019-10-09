@@ -68,6 +68,7 @@ public class DAO_libro {
         Session sesion = sf.openSession();
         List<?> i = null;
         try {
+            //Se agrega comentario
             Query querys = sesion.createSQLQuery("select * from libro where titulo like '% %';");
             System.out.println("query:\n" + querys + "\n");
 
